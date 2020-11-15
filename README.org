@@ -2,6 +2,8 @@
 
 [[./image/mounted.jpg]]
 
+You can read the full history here: [[https://bjonnh.net/article/20201114_trackpoint_ergonomic][Write up]]
+
 I decided to add a Trackpoint to my MS Ergonomic 4000 keyboard.
 
 For that I needed two things:
