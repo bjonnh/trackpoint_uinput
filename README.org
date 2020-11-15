@@ -1,0 +1,30 @@
+* Bjo's nipple
+
+[[./image/mounted.jpg]]
+
+I decided to add a Trackpoint to my MS Ergonomic 4000 keyboard.
+
+For that I needed two things:
+- A Linux driver, compatible with wayland. I used uinput (user-mode devices)
+- An arduino firmware that understands the Trackpoint PS/2 protocol and send that over serial
+
+
+** Compilation of the driver
+
+Careful, my version has the buttons 1 and 3 inverted because I had an issue in my wiring.
+
+#+BEGIN_SRC: sh
+gcc -Werror -O3 -s uinput_mouse.c -o uinput_mouse
+sudo ./uinput_mouse /dev/ttyACM0  # where /dev/ttyACM0 is your serial port
+#+END_SRC
+
+** Usage of the Arduino program
+
+The arduino program is coming from an adaptation of https://github.com/rampadc/arduino-trackpoint-extended
+
+You'll find it in firmware.
+
+I'm giving a copy of it with the program to make it more convenient. I was not
+able to get the streaming mode to work (really likely some timing issues).
+
+You just have to put the CLK, DATA and RST pins you are using in the \#define at the beginning of the code and flash that.
