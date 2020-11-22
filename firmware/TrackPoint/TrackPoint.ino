@@ -1,4 +1,5 @@
 #include "TrackPoint.h"
+#include <Mouse.h>
 
 // Make sure you change these to the pins you use
 #define CLOCK       4
@@ -21,12 +22,14 @@ void setup()
   trackpoint.setSensitivityFactor(0xb0);
   trackpoint.setRemoteMode();
   attachInterrupt(CLOCK_INT, clockInterrupt, FALLING);
-}
 
-int btnStatus = 0;
+  Mouse.begin();
+  Serial.println("Setup successful");
+}
 
 void loop()
 {
+  serialEvent(); // serialEvent is not in the trinket M0 loop… so we have to add it manually
   if (stringComplete) {
     inputString.trim();
     if (inputString == "WHO") {
@@ -44,44 +47,31 @@ void loop()
   
   TrackPoint::DataReport d = trackpoint.readData();
   if ((d.x!=0) ||  (d.y!=0)) {
-    Serial.print("m ");
-    Serial.print(d.x);
-    Serial.print(" ");
-    Serial.println(-d.y);
+    Mouse.move(d.x,-d.y,0);
   }
-   
-  for (int btn=1;btn<4;btn++) {
-    int pos = (1<<(btn-1));
-    if (((d.state&pos) != 0) && (btnStatus&pos) == 0) {
-      Serial.print("c ");
-      Serial.println(btn);
-      btnStatus = btnStatus | pos;
+  
+  if ((d.state&4)!=0) {  // I inverted 3 and 1…
+    if (!Mouse.isPressed(MOUSE_LEFT)) {
+      Mouse.press(MOUSE_LEFT);
     }
-    if (((d.state&pos) == 0) && (btnStatus&pos) != 0) {
-      Serial.print("r ");
-      Serial.println(btn);
-      btnStatus = btnStatus & (0b1111 - pos);
-    }
-  }
+  } else { Mouse.release(MOUSE_LEFT); }
+  if ((d.state&2)!=0) {
+    if (!Mouse.isPressed(MOUSE_RIGHT)) {
+      Mouse.press(MOUSE_RIGHT);
+    } 
+  } else { Mouse.release(MOUSE_RIGHT); }
 }
 
 void clockInterrupt(void) {
   trackpoint.getDataBit();
 }
 
-/*
-  SerialEvent occurs whenever a new data comes in the hardware serial RX. This
-  routine is run between each time loop() runs, so using delay inside loop can
-  delay response. Multiple bytes of data may be available.
-*/
 void serialEvent() {
   while (Serial.available()) {
-    // get the new byte:
     char inChar = (char)Serial.read();
-    // add it to the inputString:
+   
     inputString += inChar;
-    // if the incoming character is a newline, set a flag so the main loop can
-    // do something about it:
+    
     if (inChar == '\n') {
       stringComplete = true;
     }

@@ -7,11 +7,13 @@ You can read the full history here: [[https://bjonnh.net/article/20201114_trackp
 I decided to add a Trackpoint to my MS Ergonomic 4000 keyboard.
 
 For that I needed two things:
-- A Linux driver, compatible with wayland. I used uinput (user-mode devices)
+- ~~A Linux driver, compatible with wayland. I used uinput (user-mode devices)~~ This is not needed anymore as we use the native USB mode of the Trinket M0
 - An arduino firmware that understands the Trackpoint PS/2 protocol and send that over serial
 
 
-** Compilation of the driver
+** ~~Compilation of the driver~~ (DEPRECATED)
+
+This is not needed anymore, but I'm leaving it here as uinput is an interesting thing.
 
 Careful, my version has the buttons 1 and 3 inverted because I had an issue in my wiring.
 
@@ -24,7 +26,7 @@ sudo ./uinput_mouse /dev/ttyACM0  # where /dev/ttyACM0 is your serial port
 
 The arduino program is coming from an adaptation of https://github.com/rampadc/arduino-trackpoint-extended
 
-You'll find it in firmware.
+You'll find it in firmware, it should work on Adafruit's Trinket M0 and any Arduino board able to do USB HID.
 
 I'm giving a copy of it with the program to make it more convenient. I was not
 able to get the streaming mode to work (really likely some timing issues).
