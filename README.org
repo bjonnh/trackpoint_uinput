@@ -7,11 +7,11 @@ You can read the full history here: [[https://bjonnh.net/article/20201114_trackp
 I decided to add a Trackpoint to my MS Ergonomic 4000 keyboard.
 
 For that I needed two things:
-- ~~A Linux driver, compatible with wayland. I used uinput (user-mode devices)~~ This is not needed anymore as we use the native USB mode of the Trinket M0
+- +A Linux driver, compatible with wayland. I used uinput (user-mode devices)+ This is not needed anymore as we use the native USB mode of the Trinket M0
 - An arduino firmware that understands the Trackpoint PS/2 protocol and send that over serial
 
 
-** ~~Compilation of the driver~~ (DEPRECATED)
+** +Compilation of the driver+ (DEPRECATED)
 
 This is not needed anymore, but I'm leaving it here as uinput is an interesting thing.
 
